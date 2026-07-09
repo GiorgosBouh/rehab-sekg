@@ -1,0 +1,12 @@
+PREFIX sekg: <https://example.org/sekg/rehab#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+SELECT ?case ?caseLabel ?domainLabel
+WHERE {
+  ?case a sekg:DeidentifiedClinicalCase ;
+        rdfs:label ?caseLabel ;
+        sekg:condition sekg:CerebralPalsy ;
+        sekg:hasFunctionalDomain ?domain .
+  ?domain rdfs:label ?domainLabel .
+}
+ORDER BY ?caseLabel ?domainLabel

@@ -1,0 +1,12 @@
+PREFIX sekg: <https://example.org/sekg/rehab#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+SELECT ?source ?sourceLabel ?variable ?variableLabel ?variableName
+WHERE {
+  ?source sekg:capturesVariable ?variable ;
+          rdfs:label ?sourceLabel .
+  ?variable a sekg:SensorVariable ;
+            rdfs:label ?variableLabel ;
+            sekg:variableName ?variableName .
+}
+ORDER BY ?sourceLabel ?variableName

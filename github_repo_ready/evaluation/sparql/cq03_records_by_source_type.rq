@@ -1,0 +1,14 @@
+PREFIX sekg: <https://example.org/sekg/rehab#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+SELECT ?record ?recordLabel ?source ?sourceLabel ?sourceType
+WHERE {
+  ?record a ?recordType ;
+          rdfs:label ?recordLabel ;
+          sekg:hasSourceData|sekg:hasSourceDataset ?source .
+  ?source rdfs:label ?sourceLabel ;
+          a ?sourceType .
+  FILTER(?recordType IN (sekg:DeidentifiedClinicalCase, sekg:RepresentativeRecording))
+  FILTER(?sourceType IN (sekg:LocalClinicalCaseSource, sekg:OpenRehabilitationDataset, sekg:OpenGaitDataset))
+}
+ORDER BY ?sourceType ?recordLabel

@@ -1,0 +1,17 @@
+PREFIX sekg: <https://example.org/sekg/rehab#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+SELECT ?enterpriseLabel ?departmentLabel ?roleLabel ?roleTypeLabel ?responsibility
+WHERE {
+  sekg:DemoRehabilitationCenter rdfs:label ?enterpriseLabel ;
+                                sekg:hasEnterpriseRole ?role .
+  ?role a ?roleType ;
+        rdfs:label ?roleLabel ;
+        sekg:assignedToDepartment ?department ;
+        sekg:enterpriseResponsibility ?responsibility .
+  ?roleType rdfs:subClassOf* sekg:EnterpriseRole ;
+            rdfs:label ?roleTypeLabel .
+  ?department rdfs:label ?departmentLabel .
+  FILTER(?roleType != sekg:EnterpriseRole)
+}
+ORDER BY ?departmentLabel ?roleLabel

@@ -1,0 +1,11 @@
+PREFIX sekg: <https://example.org/sekg/rehab#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+SELECT ?case ?caseLabel ?instrumentLabel
+WHERE {
+  ?case a sekg:DeidentifiedClinicalCase ;
+        rdfs:label ?caseLabel ;
+        sekg:usesAssessmentInstrument ?instrument .
+  ?instrument rdfs:label ?instrumentLabel .
+}
+ORDER BY ?caseLabel ?instrumentLabel

@@ -1,0 +1,470 @@
+@prefix sekg: <https://example.org/sekg/rehab#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<https://example.org/sekg/rehab> a owl:Ontology ;
+    dcterms:title "Semantic Enterprise Knowledge Graph ontology for interdisciplinary rehabilitation" ;
+    dcterms:created "2026-07-08"^^xsd:date ;
+    dcterms:description "A compact ontology for modeling rehabilitation enterprises, care processes, value propositions, data sources, assessment cases, sensor recordings, observed variables, provenance, and human-LLM collaborative modeling." .
+
+#################################################################
+# Core enterprise classes
+#################################################################
+
+sekg:RehabilitationEnterprise a owl:Class ;
+    rdfs:label "Rehabilitation enterprise" ;
+    rdfs:comment "An organization or center that delivers rehabilitation services and manages clinical, operational, and research data." .
+
+sekg:EnterpriseRole a owl:Class ;
+    rdfs:label "Enterprise role" ;
+    rdfs:comment "A human or computational role that participates in care delivery, interpretation, governance, or knowledge-graph modeling." .
+
+sekg:Department a owl:Class ;
+    rdfs:label "Department" ;
+    rdfs:comment "An organizational unit within a rehabilitation enterprise." .
+
+sekg:ProfessionalRole a owl:Class ;
+    rdfs:subClassOf sekg:EnterpriseRole ;
+    rdfs:label "Professional role" ;
+    rdfs:comment "A professional responsibility or role involved in care, interpretation, governance, or modeling." .
+
+sekg:ComputationalAssistantRole a owl:Class ;
+    rdfs:subClassOf sekg:EnterpriseRole ;
+    rdfs:label "Computational assistant role" ;
+    rdfs:comment "A non-autonomous computational support role, such as an LLM assistant, whose outputs require human validation." .
+
+sekg:ServiceArea a owl:Class ;
+    rdfs:label "Service area" ;
+    rdfs:comment "A clinical service area such as occupational therapy or physiotherapy." .
+
+sekg:ModelingWorkflow a owl:Class ;
+    rdfs:label "Modeling workflow" ;
+    rdfs:comment "A process for constructing, validating, and evolving the enterprise knowledge graph." .
+
+sekg:EnterpriseProcess a owl:Class ;
+    rdfs:label "Enterprise process" ;
+    rdfs:comment "A value-creating or governance process performed by the rehabilitation enterprise." .
+
+sekg:WorkflowStage a owl:Class ;
+    rdfs:label "Workflow stage" ;
+    rdfs:comment "A stage within a care, governance, or modeling workflow." .
+
+sekg:ValueProposition a owl:Class ;
+    rdfs:label "Value proposition" ;
+    rdfs:comment "A value outcome that the rehabilitation enterprise aims to create or support." .
+
+sekg:ExternalStandard a owl:Class ;
+    rdfs:label "External standard" ;
+    rdfs:comment "A standard, terminology, classification, or reference model with which the SEKG can align." .
+
+#################################################################
+# Data source and record classes
+#################################################################
+
+sekg:DataSource a owl:Class ;
+    rdfs:subClassOf prov:Entity ;
+    rdfs:label "Data source" ;
+    rdfs:comment "A source from which representative records, clinical cases, or measurements are derived." .
+
+sekg:OpenDataset a owl:Class ;
+    rdfs:subClassOf sekg:DataSource ;
+    rdfs:label "Open dataset" .
+
+sekg:OpenRehabilitationDataset a owl:Class ;
+    rdfs:subClassOf sekg:OpenDataset ;
+    rdfs:label "Open rehabilitation dataset" .
+
+sekg:OpenGaitDataset a owl:Class ;
+    rdfs:subClassOf sekg:OpenDataset ;
+    rdfs:label "Open gait dataset" .
+
+sekg:LocalClinicalCaseSource a owl:Class ;
+    rdfs:subClassOf sekg:DataSource ;
+    rdfs:label "Local clinical case source" ;
+    rdfs:comment "A local source containing clinical cases. Derived graph records should be de-identified where appropriate." .
+
+sekg:RepresentativeRecord a owl:Class ;
+    rdfs:subClassOf prov:Entity ;
+    rdfs:label "Representative record" ;
+    rdfs:comment "A small example record used to demonstrate semantic integration." .
+
+sekg:RepresentativeRecording a owl:Class ;
+    rdfs:subClassOf sekg:RepresentativeRecord ;
+    rdfs:label "Representative recording" ;
+    rdfs:comment "A representative time-series or sensor recording." .
+
+sekg:ClinicalCase a owl:Class ;
+    rdfs:subClassOf sekg:RepresentativeRecord ;
+    rdfs:label "Clinical case" ;
+    rdfs:comment "A clinical assessment or care case represented in the graph." .
+
+sekg:DeidentifiedClinicalCase a owl:Class ;
+    rdfs:subClassOf sekg:ClinicalCase ;
+    rdfs:label "De-identified clinical case" ;
+    rdfs:comment "A clinical case represented without direct personal identifiers." .
+
+sekg:ProofOfConceptSampleSet a owl:Class ;
+    rdfs:label "Proof-of-concept sample set" ;
+    rdfs:comment "A collection of representative records used in the prototype graph." .
+
+#################################################################
+# Clinical and measurement classes
+#################################################################
+
+sekg:ClinicalCondition a owl:Class ;
+    rdfs:label "Clinical condition" .
+
+sekg:AssessmentInstrument a owl:Class ;
+    rdfs:label "Assessment instrument" .
+
+sekg:FunctionalDomain a owl:Class ;
+    rdfs:label "Functional domain" ;
+    rdfs:comment "A rehabilitation-relevant domain such as balance, gait, cognition, pain, or activities of daily living." .
+
+sekg:SensorModality a owl:Class ;
+    rdfs:label "Sensor modality" .
+
+sekg:AssessmentModality a owl:Class ;
+    rdfs:label "Assessment modality" .
+
+sekg:MeasurementType a owl:Class ;
+    rdfs:label "Measurement type" .
+
+sekg:ObservedVariable a owl:Class ;
+    rdfs:label "Observed variable" ;
+    rdfs:comment "A concrete characteristic, field, feature, signal column, or assessment variable observed in a data source or case." .
+
+sekg:ClinicalVariable a owl:Class ;
+    rdfs:subClassOf sekg:ObservedVariable ;
+    rdfs:label "Clinical variable" .
+
+sekg:AssessmentVariable a owl:Class ;
+    rdfs:subClassOf sekg:ObservedVariable ;
+    rdfs:label "Assessment variable" .
+
+sekg:SensorVariable a owl:Class ;
+    rdfs:subClassOf sekg:ObservedVariable ;
+    rdfs:label "Sensor variable" .
+
+#################################################################
+# Object properties
+#################################################################
+
+sekg:includesRepresentativeRecord a owl:ObjectProperty ;
+    rdfs:label "includes representative record" ;
+    rdfs:domain sekg:ProofOfConceptSampleSet ;
+    rdfs:range sekg:RepresentativeRecord .
+
+sekg:hasDepartment a owl:ObjectProperty ;
+    rdfs:label "has department" ;
+    rdfs:domain sekg:RehabilitationEnterprise ;
+    rdfs:range sekg:Department .
+
+sekg:hasEnterpriseRole a owl:ObjectProperty ;
+    rdfs:label "has enterprise role" ;
+    rdfs:domain sekg:RehabilitationEnterprise ;
+    rdfs:range sekg:EnterpriseRole .
+
+sekg:hasModelingWorkflow a owl:ObjectProperty ;
+    rdfs:label "has modeling workflow" ;
+    rdfs:domain sekg:RehabilitationEnterprise ;
+    rdfs:range sekg:ModelingWorkflow .
+
+sekg:hasEnterpriseProcess a owl:ObjectProperty ;
+    rdfs:label "has enterprise process" ;
+    rdfs:domain sekg:RehabilitationEnterprise ;
+    rdfs:range sekg:EnterpriseProcess .
+
+sekg:hasValueProposition a owl:ObjectProperty ;
+    rdfs:label "has value proposition" ;
+    rdfs:domain sekg:RehabilitationEnterprise ;
+    rdfs:range sekg:ValueProposition .
+
+sekg:hasWorkflowStage a owl:ObjectProperty ;
+    rdfs:label "has workflow stage" ;
+    rdfs:range sekg:WorkflowStage .
+
+sekg:nextStage a owl:ObjectProperty ;
+    rdfs:label "next stage" ;
+    rdfs:domain sekg:WorkflowStage ;
+    rdfs:range sekg:WorkflowStage .
+
+sekg:stageResponsibleRole a owl:ObjectProperty ;
+    rdfs:label "stage responsible role" ;
+    rdfs:domain sekg:WorkflowStage ;
+    rdfs:range sekg:EnterpriseRole .
+
+sekg:supportsValueProposition a owl:ObjectProperty ;
+    rdfs:label "supports value proposition" ;
+    rdfs:domain sekg:EnterpriseProcess ;
+    rdfs:range sekg:ValueProposition .
+
+sekg:alignsWithExternalStandard a owl:ObjectProperty ;
+    rdfs:label "aligns with external standard" ;
+    rdfs:range sekg:ExternalStandard .
+
+sekg:assignedToDepartment a owl:ObjectProperty ;
+    rdfs:label "assigned to department" ;
+    rdfs:domain sekg:EnterpriseRole ;
+    rdfs:range sekg:Department .
+
+sekg:supportsWorkflow a owl:ObjectProperty ;
+    rdfs:label "supports workflow" ;
+    rdfs:domain sekg:EnterpriseRole ;
+    rdfs:range sekg:ModelingWorkflow .
+
+sekg:usesExternalDataset a owl:ObjectProperty ;
+    rdfs:label "uses external dataset" ;
+    rdfs:domain sekg:RehabilitationEnterprise ;
+    rdfs:range sekg:OpenDataset .
+
+sekg:usesLocalClinicalSource a owl:ObjectProperty ;
+    rdfs:label "uses local clinical source" ;
+    rdfs:domain sekg:RehabilitationEnterprise ;
+    rdfs:range sekg:LocalClinicalCaseSource .
+
+sekg:interpretsRecord a owl:ObjectProperty ;
+    rdfs:label "interprets record" ;
+    rdfs:domain sekg:ProfessionalRole ;
+    rdfs:range sekg:RepresentativeRecord .
+
+sekg:validatesProvenance a owl:ObjectProperty ;
+    rdfs:label "validates provenance" ;
+    rdfs:domain sekg:ProfessionalRole .
+
+sekg:validatesCandidateModel a owl:ObjectProperty ;
+    rdfs:label "validates candidate model" ;
+    rdfs:domain sekg:ProfessionalRole ;
+    rdfs:range sekg:ModelingWorkflow .
+
+sekg:usesSampleSet a owl:ObjectProperty ;
+    rdfs:label "uses sample set" ;
+    rdfs:domain sekg:ModelingWorkflow ;
+    rdfs:range sekg:ProofOfConceptSampleSet .
+
+sekg:hasSourceData a owl:ObjectProperty ;
+    rdfs:subPropertyOf prov:wasDerivedFrom ;
+    rdfs:label "has source data" ;
+    rdfs:domain sekg:RepresentativeRecord ;
+    rdfs:range sekg:DataSource .
+
+sekg:hasSourceDataset a owl:ObjectProperty ;
+    rdfs:subPropertyOf sekg:hasSourceData ;
+    rdfs:label "has source dataset" ;
+    rdfs:domain sekg:RepresentativeRecord ;
+    rdfs:range sekg:DataSource .
+
+sekg:serviceArea a owl:ObjectProperty ;
+    rdfs:label "service area" ;
+    rdfs:domain sekg:ClinicalCase ;
+    rdfs:range sekg:ServiceArea .
+
+sekg:condition a owl:ObjectProperty ;
+    rdfs:label "condition" ;
+    rdfs:domain sekg:RepresentativeRecord ;
+    rdfs:range sekg:ClinicalCondition .
+
+sekg:usesAssessmentInstrument a owl:ObjectProperty ;
+    rdfs:label "uses assessment instrument" ;
+    rdfs:domain sekg:ClinicalCase ;
+    rdfs:range sekg:AssessmentInstrument .
+
+sekg:hasFunctionalDomain a owl:ObjectProperty ;
+    rdfs:label "has functional domain" ;
+    rdfs:domain sekg:ClinicalCase ;
+    rdfs:range sekg:FunctionalDomain .
+
+sekg:hasModality a owl:ObjectProperty ;
+    rdfs:label "has modality" ;
+    rdfs:domain sekg:DataSource ;
+    rdfs:range sekg:SensorModality .
+
+sekg:hasMeasurement a owl:ObjectProperty ;
+    rdfs:label "has measurement" ;
+    rdfs:domain sekg:RepresentativeRecord ;
+    rdfs:range sekg:MeasurementType .
+
+sekg:usesModality a owl:ObjectProperty ;
+    rdfs:label "uses modality" ;
+    rdfs:domain sekg:MeasurementType ;
+    rdfs:range sekg:SensorModality .
+
+sekg:hasObservedVariable a owl:ObjectProperty ;
+    rdfs:label "has observed variable" ;
+    rdfs:domain sekg:RepresentativeRecord ;
+    rdfs:range sekg:ObservedVariable ;
+    rdfs:comment "Links a case or recording to the concrete variables available for that record. This property supports cases with different feature sets." .
+
+sekg:capturesVariable a owl:ObjectProperty ;
+    rdfs:label "captures variable" ;
+    rdfs:domain sekg:DataSource ;
+    rdfs:range sekg:ObservedVariable .
+
+sekg:mapsToFunctionalDomain a owl:ObjectProperty ;
+    rdfs:label "maps to functional domain" ;
+    rdfs:domain sekg:ObservedVariable ;
+    rdfs:range sekg:FunctionalDomain .
+
+#################################################################
+# Datatype properties
+#################################################################
+
+sekg:sourceContext a owl:DatatypeProperty ;
+    rdfs:label "source context" ;
+    rdfs:range xsd:string .
+
+sekg:sourceDocumentCount a owl:DatatypeProperty ;
+    rdfs:label "source document count" ;
+    rdfs:range xsd:integer .
+
+sekg:privacyTreatment a owl:DatatypeProperty ;
+    rdfs:label "privacy treatment" ;
+    rdfs:range xsd:string .
+
+sekg:sourceFile a owl:DatatypeProperty ;
+    rdfs:label "source file" ;
+    rdfs:range xsd:string .
+
+sekg:sourceArchive a owl:DatatypeProperty ;
+    rdfs:label "source archive" ;
+    rdfs:range xsd:string .
+
+sekg:sourceArchiveEntry a owl:DatatypeProperty ;
+    rdfs:label "source archive entry" ;
+    rdfs:range xsd:string .
+
+sekg:supportingMetadataFile a owl:DatatypeProperty ;
+    rdfs:label "supporting metadata file" ;
+    rdfs:range xsd:string .
+
+sekg:sampleFile a owl:DatatypeProperty ;
+    rdfs:label "sample file" ;
+    rdfs:range xsd:string .
+
+sekg:subjectCode a owl:DatatypeProperty ;
+    rdfs:label "subject code" ;
+    rdfs:range xsd:string .
+
+sekg:exerciseCode a owl:DatatypeProperty ;
+    rdfs:label "exercise code" ;
+    rdfs:range xsd:string .
+
+sekg:ageGroup a owl:DatatypeProperty ;
+    rdfs:label "age group" ;
+    rdfs:range xsd:string .
+
+sekg:assessmentPeriod a owl:DatatypeProperty ;
+    rdfs:label "assessment period" ;
+    rdfs:range xsd:string .
+
+sekg:clinicalFocus a owl:DatatypeProperty ;
+    rdfs:label "clinical focus" ;
+    rdfs:range xsd:string .
+
+sekg:interventionFocus a owl:DatatypeProperty ;
+    rdfs:label "intervention focus" ;
+    rdfs:range xsd:string .
+
+sekg:departmentResponsibility a owl:DatatypeProperty ;
+    rdfs:label "department responsibility" ;
+    rdfs:domain sekg:Department ;
+    rdfs:range xsd:string .
+
+sekg:enterpriseResponsibility a owl:DatatypeProperty ;
+    rdfs:label "enterprise responsibility" ;
+    rdfs:domain sekg:EnterpriseRole ;
+    rdfs:range xsd:string .
+
+sekg:valueDescription a owl:DatatypeProperty ;
+    rdfs:label "value description" ;
+    rdfs:domain sekg:ValueProposition ;
+    rdfs:range xsd:string .
+
+sekg:stageOrder a owl:DatatypeProperty ;
+    rdfs:label "stage order" ;
+    rdfs:domain sekg:WorkflowStage ;
+    rdfs:range xsd:integer .
+
+sekg:stagePurpose a owl:DatatypeProperty ;
+    rdfs:label "stage purpose" ;
+    rdfs:domain sekg:WorkflowStage ;
+    rdfs:range xsd:string .
+
+sekg:governanceCriterion a owl:DatatypeProperty ;
+    rdfs:label "governance criterion" ;
+    rdfs:domain sekg:WorkflowStage ;
+    rdfs:range xsd:string .
+
+sekg:standardUse a owl:DatatypeProperty ;
+    rdfs:label "standard use" ;
+    rdfs:domain sekg:ExternalStandard ;
+    rdfs:range xsd:string .
+
+sekg:materializedSample a owl:DatatypeProperty ;
+    rdfs:label "materialized sample" ;
+    rdfs:range xsd:boolean .
+
+sekg:sampleRateHz a owl:DatatypeProperty ;
+    rdfs:label "sample rate in Hz" ;
+    rdfs:range xsd:decimal .
+
+sekg:sensorCount a owl:DatatypeProperty ;
+    rdfs:label "sensor count" ;
+    rdfs:range xsd:integer .
+
+sekg:subjectCount a owl:DatatypeProperty ;
+    rdfs:label "subject count" ;
+    rdfs:range xsd:integer .
+
+sekg:patientCount a owl:DatatypeProperty ;
+    rdfs:label "patient count" ;
+    rdfs:range xsd:integer .
+
+sekg:controlCount a owl:DatatypeProperty ;
+    rdfs:label "control count" ;
+    rdfs:range xsd:integer .
+
+sekg:exerciseCount a owl:DatatypeProperty ;
+    rdfs:label "exercise count" ;
+    rdfs:range xsd:integer .
+
+sekg:instanceCount a owl:DatatypeProperty ;
+    rdfs:label "instance count" ;
+    rdfs:range xsd:integer .
+
+sekg:variableName a owl:DatatypeProperty ;
+    rdfs:label "variable name" ;
+    rdfs:domain sekg:ObservedVariable ;
+    rdfs:range xsd:string .
+
+sekg:sourceColumn a owl:DatatypeProperty ;
+    rdfs:label "source column" ;
+    rdfs:domain sekg:ObservedVariable ;
+    rdfs:range xsd:string .
+
+sekg:unit a owl:DatatypeProperty ;
+    rdfs:label "unit" ;
+    rdfs:domain sekg:ObservedVariable ;
+    rdfs:range xsd:string .
+
+sekg:valueSummary a owl:DatatypeProperty ;
+    rdfs:label "value summary" ;
+    rdfs:domain sekg:ObservedVariable ;
+    rdfs:range xsd:string .
+
+sekg:llmTask a owl:DatatypeProperty ;
+    rdfs:label "LLM task" ;
+    rdfs:range xsd:string .
+
+sekg:humanTask a owl:DatatypeProperty ;
+    rdfs:label "human task" ;
+    rdfs:range xsd:string .
+
+sekg:integrationAssumption a owl:DatatypeProperty ;
+    rdfs:label "integration assumption" ;
+    rdfs:range xsd:string .

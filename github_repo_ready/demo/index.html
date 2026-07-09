@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Rehabilitation SEKG Demo</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">PoEM 2026 proof-of-concept</p>
+          <h1>Rehabilitation Semantic Enterprise Knowledge Graph</h1>
+        </div>
+        <div class="repo-note">Static demo | no backend | GitHub Pages ready</div>
+      </header>
+
+      <main>
+        <section class="metrics" aria-label="SEKG evaluation metrics">
+          <article>
+            <span class="metric-value" id="tripleCount">876</span>
+            <span class="metric-label">RDF triples</span>
+          </article>
+          <article>
+            <span class="metric-value" id="recordCount">5</span>
+            <span class="metric-label">Representative records</span>
+          </article>
+          <article>
+            <span class="metric-value" id="cqRate">10/10</span>
+            <span class="metric-label">Competency questions</span>
+          </article>
+          <article>
+            <span class="metric-value" id="coverageRate">20/20</span>
+            <span class="metric-label">Mapped variables</span>
+          </article>
+        </section>
+
+        <nav class="tabs" aria-label="Demo sections">
+          <button id="records-tab" class="tab-button active" type="button" data-tab="records">Records</button>
+          <button id="graph-tab" class="tab-button" type="button" data-tab="graph">Graph</button>
+          <button id="enterprise-tab" class="tab-button" type="button" data-tab="enterprise">Enterprise</button>
+          <button id="evaluation-tab" class="tab-button" type="button" data-tab="evaluation">Evaluation</button>
+          <button id="ontology-tab" class="tab-button" type="button" data-tab="ontology">Ontology</button>
+        </nav>
+
+        <section id="records" class="tab-panel active" aria-labelledby="records-tab">
+          <div class="section-head">
+            <div>
+              <h2>Representative Records</h2>
+              <p>Three de-identified clinical case records and two sensor/dataset recording records.</p>
+            </div>
+            <label class="filter-control">
+              <span>Filter</span>
+              <select id="recordFilter">
+                <option value="all">All records</option>
+                <option value="Clinical case">Clinical cases</option>
+                <option value="Sensor recording">Sensor recordings</option>
+              </select>
+            </label>
+          </div>
+          <div id="recordGrid" class="record-grid"></div>
+        </section>
+
+        <section id="graph" class="tab-panel" aria-labelledby="graph-tab">
+          <div class="section-head">
+            <div>
+              <h2>Graph View</h2>
+              <p>Compact view of how records connect to source data, domains, variables, and professional roles.</p>
+            </div>
+            <div class="legend" aria-label="Graph legend">
+              <span><i class="dot case"></i>Case</span>
+              <span><i class="dot recording"></i>Recording</span>
+              <span><i class="dot concept"></i>Concept</span>
+              <span><i class="dot source"></i>Source</span>
+              <span><i class="dot enterprise"></i>Enterprise</span>
+              <span><i class="dot department"></i>Department</span>
+            </div>
+          </div>
+          <div class="graph-wrap">
+            <svg id="kgGraph" role="img" aria-label="Knowledge graph overview"></svg>
+          </div>
+        </section>
+
+        <section id="enterprise" class="tab-panel" aria-labelledby="enterprise-tab">
+          <div class="section-head">
+            <div>
+              <h2>Enterprise Model</h2>
+              <p>Departments, roles, responsibilities, and the human-LLM modeling workflow are explicit graph elements.</p>
+            </div>
+            <a class="text-link" href="../evaluation/sparql/cq09_enterprise_roles_by_department.rq">Open CQ9 query</a>
+          </div>
+          <div class="enterprise-layout">
+            <div>
+              <h3>Departments</h3>
+              <div id="departmentGrid" class="department-grid"></div>
+            </div>
+            <div class="summary-table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Role</th>
+                    <th>Department</th>
+                    <th>Responsibility</th>
+                  </tr>
+                </thead>
+                <tbody id="enterpriseRoleRows"></tbody>
+              </table>
+            </div>
+          </div>
+          <div class="enterprise-detail-grid">
+            <section>
+              <h3>Care Pathway</h3>
+              <div id="processGrid" class="process-grid"></div>
+            </section>
+            <section>
+              <h3>Standards Positioning</h3>
+              <div id="standardGrid" class="standard-grid"></div>
+            </section>
+          </div>
+          <div class="enterprise-detail-grid">
+            <section>
+              <h3>Governance Flow</h3>
+              <div id="governanceGrid" class="process-grid"></div>
+            </section>
+            <section>
+              <h3>Value Proposition</h3>
+              <div id="valuePanel" class="value-panel"></div>
+            </section>
+          </div>
+          <div class="workflow-strip" id="workflowSteps"></div>
+        </section>
+
+        <section id="evaluation" class="tab-panel" aria-labelledby="evaluation-tab">
+          <div class="section-head">
+            <div>
+              <h2>SPARQL Evaluation Results</h2>
+              <p>All competency-question queries ran over the ontology and instance graph.</p>
+            </div>
+            <a class="text-link" href="../evaluation/sparql_results.md">Open full results</a>
+          </div>
+          <div class="results-layout">
+            <div class="summary-table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Metric</th>
+                    <th>Result</th>
+                  </tr>
+                </thead>
+                <tbody id="metricRows"></tbody>
+              </table>
+            </div>
+            <div class="summary-table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Competency query</th>
+                    <th>Rows</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody id="queryRows"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <section id="ontology" class="tab-panel" aria-labelledby="ontology-tab">
+          <div class="section-head">
+            <div>
+              <h2>Ontology Package</h2>
+              <p>The demo separates reusable ontology/schema from current representative instances.</p>
+            </div>
+          </div>
+          <div class="file-list" id="fileList"></div>
+        </section>
+      </main>
+    </div>
+
+    <script src="app.js"></script>
+  </body>
+</html>

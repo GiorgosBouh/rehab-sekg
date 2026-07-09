@@ -1,0 +1,314 @@
+@prefix sekg: <https://example.org/sekg/rehab#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+# Legacy compact prototype graph. The current evaluated graph is split
+# into sekg_ontology.ttl and sekg_instances.ttl.
+
+sekg:RepresentativeSampleSet a sekg:ProofOfConceptSampleSet ;
+    rdfs:label "Representative rehabilitation SEKG sample set" ;
+    sekg:includesRepresentativeRecord sekg:MEx_Subject01_Exercise01,
+        sekg:PhysioNet_GaPt03_01,
+        sekg:KEDEEA_Case_001,
+        sekg:KEDEEA_Case_002,
+        sekg:KEDEEA_Case_003 ;
+    sekg:integrationAssumption "Records are independent examples from different data sources; they are not modeled as the same patient, organization, or care episode." .
+
+sekg:DemoRehabilitationCenter a sekg:RehabilitationEnterprise ;
+    rdfs:label "Demo interdisciplinary rehabilitation center" ;
+    sekg:hasDepartment sekg:PhysiotherapyDepartment,
+        sekg:GaitLaboratory,
+        sekg:ClinicalDataOffice ;
+    sekg:usesExternalDataset sekg:MEx,
+        sekg:PhysioNetGaitPDB ;
+    sekg:usesLocalClinicalSource sekg:KEDEEA_LocalClinicalCases .
+
+sekg:PhysiotherapyDepartment a sekg:Department ;
+    rdfs:label "Physiotherapy department" .
+
+sekg:GaitLaboratory a sekg:Department ;
+    rdfs:label "Gait and movement analysis laboratory" .
+
+sekg:ClinicalDataOffice a sekg:Department ;
+    rdfs:label "Clinical data governance office" .
+
+sekg:PhysiotherapistRole a sekg:ProfessionalRole ;
+    rdfs:label "Physiotherapist" ;
+    sekg:interpretsRecord sekg:MEx_Subject01_Exercise01,
+        sekg:PhysioNet_GaPt03_01,
+        sekg:KEDEEA_Case_003 .
+
+sekg:OccupationalTherapistRole a sekg:ProfessionalRole ;
+    rdfs:label "Occupational therapist" ;
+    sekg:interpretsRecord sekg:KEDEEA_Case_001,
+        sekg:KEDEEA_Case_002 .
+
+sekg:DataStewardRole a sekg:ProfessionalRole ;
+    rdfs:label "Clinical data steward" ;
+    sekg:validatesProvenance sekg:RepresentativeSampleSet .
+
+sekg:DomainExpertRole a sekg:ProfessionalRole ;
+    rdfs:label "Rehabilitation domain expert" ;
+    sekg:validatesCandidateModel sekg:HumanLLMCollaborativeModelingWorkflow .
+
+sekg:HumanLLMCollaborativeModelingWorkflow a sekg:ModelingWorkflow ;
+    rdfs:label "Human-LLM collaborative SEKG modeling workflow" ;
+    sekg:usesSampleSet sekg:RepresentativeSampleSet ;
+    sekg:llmTask "Propose candidate concepts, relationships, mappings, and natural-language queries." ;
+    sekg:humanTask "Validate clinical meaning, organizational fit, governance rules, and final graph changes." .
+
+sekg:KEDEEA_LocalClinicalCases a sekg:LocalClinicalCaseSource ;
+    rdfs:label "KEDEEA local de-identified clinical cases" ;
+    sekg:sourceContext "Local occupational therapy and physiotherapy assessment files" ;
+    sekg:sourceDocumentCount "3"^^xsd:integer ;
+    sekg:privacyTreatment "Direct identifiers from the source files are excluded from the derived sample CSV and knowledge graph." ;
+    sekg:sampleFile "data/samples/kedeea_cases_deidentified.csv" .
+
+sekg:KEDEEA_Case_001 a sekg:DeidentifiedClinicalCase ;
+    rdfs:label "KEDEEA de-identified clinical case 001" ;
+    sekg:hasSourceDataset sekg:KEDEEA_LocalClinicalCases ;
+    sekg:serviceArea sekg:OccupationalTherapy ;
+    sekg:ageGroup "Preschool child" ;
+    sekg:assessmentPeriod "2025-Q4" ;
+    sekg:condition sekg:DevelopmentalImmaturity ;
+    sekg:usesAssessmentInstrument sekg:ClinicalObservation ;
+    sekg:hasFunctionalDomain sekg:AdaptationAndSeparation,
+        sekg:Attention,
+        sekg:PlayAndInteraction,
+        sekg:Cognition,
+        sekg:GrossMotorFunction,
+        sekg:FineMotorFunction,
+        sekg:ActivitiesOfDailyLiving ;
+    sekg:interventionFocus "Engagement in activities, interaction, attention, basic concepts, and gross and fine motor skills." .
+
+sekg:KEDEEA_Case_002 a sekg:DeidentifiedClinicalCase ;
+    rdfs:label "KEDEEA de-identified clinical case 002" ;
+    sekg:hasSourceDataset sekg:KEDEEA_LocalClinicalCases ;
+    sekg:serviceArea sekg:OccupationalTherapy ;
+    sekg:ageGroup "Young adult" ;
+    sekg:assessmentPeriod "2025-Q1 and 2026-Q1" ;
+    sekg:condition sekg:CerebralPalsy ;
+    sekg:usesAssessmentInstrument sekg:MoCA,
+        sekg:BOT2,
+        sekg:ModifiedBarthelIndex,
+        sekg:CanadianOccupationalPerformanceMeasure ;
+    sekg:hasFunctionalDomain sekg:Cognition,
+        sekg:VisualSpatialPerception,
+        sekg:GrossMotorFunction,
+        sekg:FineMotorFunction,
+        sekg:Balance,
+        sekg:ActivitiesOfDailyLiving,
+        sekg:CommunityParticipation ;
+    sekg:interventionFocus "Autonomy, activities of daily living, attention, memory, visual perception, balance, and trunk stability." .
+
+sekg:KEDEEA_Case_003 a sekg:DeidentifiedClinicalCase ;
+    rdfs:label "KEDEEA de-identified clinical case 003" ;
+    sekg:hasSourceDataset sekg:KEDEEA_LocalClinicalCases ;
+    sekg:serviceArea sekg:Physiotherapy ;
+    sekg:ageGroup "Middle-aged adult" ;
+    sekg:assessmentPeriod "2025-Q4" ;
+    sekg:condition sekg:CerebralPalsy ;
+    sekg:usesAssessmentInstrument sekg:VASPainScale,
+        sekg:RangeOfMotionAssessment,
+        sekg:ManualMuscleTesting,
+        sekg:FunctionalGaitAssessment,
+        sekg:AssistiveDeviceReview ;
+    sekg:hasFunctionalDomain sekg:Pain,
+        sekg:Posture,
+        sekg:Balance,
+        sekg:FallsRisk,
+        sekg:Gait,
+        sekg:RangeOfMotion,
+        sekg:MuscleStrength,
+        sekg:AssistiveDeviceUse ;
+    sekg:interventionFocus "Pain management, posture improvement, balance, fall reduction, and rollator-use evaluation." .
+
+sekg:MEx a sekg:OpenRehabilitationDataset ;
+    rdfs:label "MEx Multi-modal Exercise dataset" ;
+    dcterms:source <https://archive.ics.uci.edu/dataset/500/mex> ;
+    dcterms:identifier "doi:10.24432/C59K6T" ;
+    sekg:license <https://creativecommons.org/licenses/by/4.0/> ;
+    sekg:subjectCount "30"^^xsd:integer ;
+    sekg:exerciseCount "7"^^xsd:integer ;
+    sekg:instanceCount "6262"^^xsd:integer ;
+    sekg:hasModality sekg:ThighAccelerometer,
+        sekg:WristAccelerometer,
+        sekg:DepthCamera,
+        sekg:PressureMat ;
+    sekg:clinicalFocus "Physiotherapy exercise recognition, counting, and quality assessment." .
+
+sekg:MEx_Subject01_Exercise01 a sekg:RepresentativeRecording ;
+    rdfs:label "MEx subject 01, exercise 01 representative recording" ;
+    sekg:hasSourceDataset sekg:MEx ;
+    sekg:subjectCode "01" ;
+    sekg:exerciseCode "01" ;
+    sekg:materializedSample "true"^^xsd:boolean ;
+    sekg:sourceArchive "data/external/mex_data.zip" ;
+    sekg:sourceArchiveEntry "act/01/01_act_1.csv",
+        "acw/01/01_acw_1.csv",
+        "dc_0.05_0.05/01/01_dc_1.csv",
+        "pm_1.0_1.0/01/01_pm_1.csv" ;
+    sekg:sampleFile "data/samples/mex_subject01_exercise01_thigh_accelerometer_sample.csv",
+        "data/samples/mex_subject01_exercise01_wrist_accelerometer_sample.csv",
+        "data/samples/mex_subject01_exercise01_depth_camera_reduced_sample.csv",
+        "data/samples/mex_subject01_exercise01_pressure_mat_reduced_sample.csv" ;
+    sekg:hasMeasurement sekg:MEx_ThighAccelerationMeasurement,
+        sekg:MEx_WristAccelerationMeasurement,
+        sekg:MEx_DepthCameraMeasurement,
+        sekg:MEx_PressureMatMeasurement .
+
+sekg:PhysioNetGaitPDB a sekg:OpenGaitDataset ;
+    rdfs:label "PhysioNet Gait in Parkinson's Disease" ;
+    dcterms:source <https://physionet.org/content/gaitpdb/1.0.0/> ;
+    dcterms:identifier "doi:10.13026/C24H3N" ;
+    sekg:license <https://opendatacommons.org/licenses/by/1-0/> ;
+    sekg:patientCount "93"^^xsd:integer ;
+    sekg:controlCount "73"^^xsd:integer ;
+    sekg:sampleRateHz "100"^^xsd:decimal ;
+    sekg:hasModality sekg:FootForceSensorArray ;
+    sekg:clinicalFocus "Parkinson's disease gait analysis using vertical ground reaction force recordings." .
+
+sekg:PhysioNet_GaPt03_01 a sekg:RepresentativeRecording ;
+    rdfs:label "PhysioNet GaPt03_01 representative force recording" ;
+    sekg:hasSourceDataset sekg:PhysioNetGaitPDB ;
+    sekg:subjectCode "GaPt03" ;
+    sekg:condition sekg:ParkinsonDisease ;
+    sekg:materializedSample "true"^^xsd:boolean ;
+    sekg:sampleRateHz "100"^^xsd:decimal ;
+    sekg:sensorCount "16"^^xsd:integer ;
+    sekg:sourceFile "data/external/physionet_gaitpdb_GaPt03_01.txt" ;
+    sekg:supportingMetadataFile "data/external/physionet_gaitpdb_demographics.xls" ;
+    sekg:sampleFile "data/samples/physionet_gaitpdb_GaPt03_01_force_sample.csv" ;
+    sekg:hasMeasurement sekg:VerticalGroundReactionForceMeasurement .
+
+sekg:ThighAccelerometer a sekg:SensorModality ;
+    rdfs:label "Thigh accelerometer" .
+
+sekg:WristAccelerometer a sekg:SensorModality ;
+    rdfs:label "Wrist accelerometer" .
+
+sekg:DepthCamera a sekg:SensorModality ;
+    rdfs:label "Depth camera" .
+
+sekg:PressureMat a sekg:SensorModality ;
+    rdfs:label "Pressure mat" .
+
+sekg:FootForceSensorArray a sekg:SensorModality ;
+    rdfs:label "Foot force sensor array" .
+
+sekg:MEx_ThighAccelerationMeasurement a sekg:MeasurementType ;
+    rdfs:label "Thigh acceleration measurement" ;
+    sekg:usesModality sekg:ThighAccelerometer .
+
+sekg:MEx_WristAccelerationMeasurement a sekg:MeasurementType ;
+    rdfs:label "Wrist acceleration measurement" ;
+    sekg:usesModality sekg:WristAccelerometer .
+
+sekg:MEx_DepthCameraMeasurement a sekg:MeasurementType ;
+    rdfs:label "Depth-camera movement measurement" ;
+    sekg:usesModality sekg:DepthCamera .
+
+sekg:MEx_PressureMatMeasurement a sekg:MeasurementType ;
+    rdfs:label "Pressure-mat movement measurement" ;
+    sekg:usesModality sekg:PressureMat .
+
+sekg:VerticalGroundReactionForceMeasurement a sekg:MeasurementType ;
+    rdfs:label "Vertical ground reaction force measurement" ;
+    sekg:usesModality sekg:FootForceSensorArray .
+
+sekg:ParkinsonDisease a sekg:ClinicalCondition ;
+    rdfs:label "Parkinson's disease" .
+
+sekg:CerebralPalsy a sekg:ClinicalCondition ;
+    rdfs:label "Cerebral palsy" .
+
+sekg:DevelopmentalImmaturity a sekg:ClinicalCondition ;
+    rdfs:label "Developmental immaturity" .
+
+sekg:OccupationalTherapy a sekg:ServiceArea ;
+    rdfs:label "Occupational therapy" .
+
+sekg:Physiotherapy a sekg:ServiceArea ;
+    rdfs:label "Physiotherapy" .
+
+sekg:ClinicalObservation a sekg:AssessmentInstrument ;
+    rdfs:label "Clinical observation" .
+
+sekg:MoCA a sekg:AssessmentInstrument ;
+    rdfs:label "Montreal Cognitive Assessment" .
+
+sekg:BOT2 a sekg:AssessmentInstrument ;
+    rdfs:label "Bruininks-Oseretsky Test of Motor Proficiency, Second Edition" .
+
+sekg:ModifiedBarthelIndex a sekg:AssessmentInstrument ;
+    rdfs:label "Modified Barthel Index" .
+
+sekg:CanadianOccupationalPerformanceMeasure a sekg:AssessmentInstrument ;
+    rdfs:label "Canadian Occupational Performance Measure" .
+
+sekg:VASPainScale a sekg:AssessmentInstrument ;
+    rdfs:label "Visual analogue pain scale" .
+
+sekg:RangeOfMotionAssessment a sekg:AssessmentInstrument ;
+    rdfs:label "Range of motion assessment" .
+
+sekg:ManualMuscleTesting a sekg:AssessmentInstrument ;
+    rdfs:label "Manual muscle testing" .
+
+sekg:FunctionalGaitAssessment a sekg:AssessmentInstrument ;
+    rdfs:label "Functional gait assessment" .
+
+sekg:AssistiveDeviceReview a sekg:AssessmentInstrument ;
+    rdfs:label "Assistive device review" .
+
+sekg:AdaptationAndSeparation a sekg:FunctionalDomain ;
+    rdfs:label "Adaptation and separation" .
+
+sekg:Attention a sekg:FunctionalDomain ;
+    rdfs:label "Attention" .
+
+sekg:PlayAndInteraction a sekg:FunctionalDomain ;
+    rdfs:label "Play and interaction" .
+
+sekg:Cognition a sekg:FunctionalDomain ;
+    rdfs:label "Cognition" .
+
+sekg:GrossMotorFunction a sekg:FunctionalDomain ;
+    rdfs:label "Gross motor function" .
+
+sekg:FineMotorFunction a sekg:FunctionalDomain ;
+    rdfs:label "Fine motor function" .
+
+sekg:ActivitiesOfDailyLiving a sekg:FunctionalDomain ;
+    rdfs:label "Activities of daily living" .
+
+sekg:VisualSpatialPerception a sekg:FunctionalDomain ;
+    rdfs:label "Visual-spatial perception" .
+
+sekg:Balance a sekg:FunctionalDomain ;
+    rdfs:label "Balance" .
+
+sekg:CommunityParticipation a sekg:FunctionalDomain ;
+    rdfs:label "Community participation" .
+
+sekg:Pain a sekg:FunctionalDomain ;
+    rdfs:label "Pain" .
+
+sekg:Posture a sekg:FunctionalDomain ;
+    rdfs:label "Posture" .
+
+sekg:FallsRisk a sekg:FunctionalDomain ;
+    rdfs:label "Falls risk" .
+
+sekg:Gait a sekg:FunctionalDomain ;
+    rdfs:label "Gait" .
+
+sekg:RangeOfMotion a sekg:FunctionalDomain ;
+    rdfs:label "Range of motion" .
+
+sekg:MuscleStrength a sekg:FunctionalDomain ;
+    rdfs:label "Muscle strength" .
+
+sekg:AssistiveDeviceUse a sekg:FunctionalDomain ;
+    rdfs:label "Assistive device use" .

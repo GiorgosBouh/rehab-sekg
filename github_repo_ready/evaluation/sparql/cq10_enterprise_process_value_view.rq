@@ -1,0 +1,17 @@
+PREFIX sekg: <https://example.org/sekg/rehab#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+SELECT ?processLabel ?stageOrder ?stageLabel ?roleLabel ?purpose ?valueLabel
+WHERE {
+  sekg:DemoRehabilitationCenter sekg:hasEnterpriseProcess ?process .
+  ?process rdfs:label ?processLabel ;
+           sekg:supportsValueProposition ?value ;
+           sekg:hasWorkflowStage ?stage .
+  ?value rdfs:label ?valueLabel .
+  ?stage rdfs:label ?stageLabel ;
+         sekg:stageOrder ?stageOrder ;
+         sekg:stagePurpose ?purpose ;
+         sekg:stageResponsibleRole ?role .
+  ?role rdfs:label ?roleLabel .
+}
+ORDER BY ?processLabel ?stageOrder ?roleLabel

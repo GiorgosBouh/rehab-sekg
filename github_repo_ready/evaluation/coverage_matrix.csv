@@ -1,0 +1,21 @@
+source,source_field_or_variable,ontology_element,mapping_type,coverage_status,responsible_role,primary_user_role,notes
+KEDEEA cases,case_id,sekg:DeidentifiedClinicalCase,class,covered,Clinical data steward,Rehabilitation domain expert,Used as de-identified case identifier
+KEDEEA cases,source_context,sekg:sourceContext,datatype_property,covered,Clinical data steward,Rehabilitation domain expert,Describes local clinical assessment context
+KEDEEA cases,service_area,sekg:serviceArea object property + sekg:ServiceArea,class_property,covered,Clinical data steward,Rehabilitation domain expert,Links case to occupational therapy or physiotherapy
+KEDEEA cases,age_group,sekg:CaseAgeGroupVariable + sekg:ageGroup,observed_variable_and_property,covered,Clinical data steward,Occupational therapist / Physiotherapist,Age represented as broad group rather than exact date
+KEDEEA cases,assessment_period,sekg:CaseAssessmentPeriodVariable + sekg:assessmentPeriod,observed_variable_and_property,covered,Clinical data steward,Occupational therapist / Physiotherapist,Quarter-level period avoids unnecessary specificity
+KEDEEA cases,condition_summary,sekg:CaseConditionSummaryVariable + sekg:ClinicalCondition,observed_variable_and_class,covered,Rehabilitation domain expert,Occupational therapist / Physiotherapist,Condition summaries mapped to clinical condition instances where possible
+KEDEEA cases,assessment_instruments,sekg:CaseAssessmentInstrumentsVariable + sekg:AssessmentInstrument,observed_variable_and_class,covered,Occupational therapist / Physiotherapist,Rehabilitation domain expert,MoCA BOT-2 MBI COPM VAS ROM MMT and clinical observation represented
+KEDEEA cases,functional_domains,sekg:CaseFunctionalDomainsVariable + sekg:FunctionalDomain,observed_variable_and_class,covered,Occupational therapist / Physiotherapist,Rehabilitation domain expert,Domains include cognition balance gait ADL pain and fine/gross motor
+KEDEEA cases,intervention_focus,sekg:CaseInterventionFocusVariable + sekg:interventionFocus,observed_variable_and_property,covered,Occupational therapist / Physiotherapist,Rehabilitation domain expert,Free-text intervention focus retained as de-identified summary
+MEx accelerometer,timestamp,sekg:TimestampVariable,sensor_variable,covered,Physiotherapist,Gait and movement analysis laboratory,Timestamp column from act/acw files
+MEx accelerometer,x,sekg:AccelerationXVariable,sensor_variable,covered,Physiotherapist,Gait and movement analysis laboratory,Accelerometer x axis
+MEx accelerometer,y,sekg:AccelerationYVariable,sensor_variable,covered,Physiotherapist,Gait and movement analysis laboratory,Accelerometer y axis
+MEx accelerometer,z,sekg:AccelerationZVariable,sensor_variable,covered,Physiotherapist,Gait and movement analysis laboratory,Accelerometer z axis
+MEx depth camera,depth_01..depth_12,sekg:DepthFeatureVectorVariable,sensor_variable,covered,Physiotherapist,Gait and movement analysis laboratory,Reduced depth feature vector in sample CSV
+MEx pressure mat,pressure_01..pressure_12,sekg:PressureFeatureVectorVariable,sensor_variable,covered,Physiotherapist,Gait and movement analysis laboratory,Reduced pressure feature vector in sample CSV
+PhysioNet gait,time_sec,sekg:TimeSecondsVariable,sensor_variable,covered,Physiotherapist,Gait and movement analysis laboratory,Time in seconds
+PhysioNet gait,left_sensor_1..left_sensor_8,sekg:LeftFootSensorForceVariable,sensor_variable,covered,Physiotherapist,Gait and movement analysis laboratory,Left foot force sensor values
+PhysioNet gait,right_sensor_1..right_sensor_8,sekg:RightFootSensorForceVariable,sensor_variable,covered,Physiotherapist,Gait and movement analysis laboratory,Right foot force sensor values
+PhysioNet gait,left_total_force,sekg:LeftTotalForceVariable,sensor_variable,covered,Physiotherapist,Gait and movement analysis laboratory,Total force under left foot
+PhysioNet gait,right_total_force,sekg:RightTotalForceVariable,sensor_variable,covered,Physiotherapist,Gait and movement analysis laboratory,Total force under right foot

@@ -1,0 +1,13 @@
+PREFIX sekg: <https://example.org/sekg/rehab#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+SELECT ?record ?recordLabel ?measurementLabel ?modalityLabel
+WHERE {
+  ?record a sekg:RepresentativeRecording ;
+          rdfs:label ?recordLabel ;
+          sekg:hasMeasurement ?measurement .
+  ?measurement rdfs:label ?measurementLabel ;
+               sekg:usesModality ?modality .
+  ?modality rdfs:label ?modalityLabel .
+}
+ORDER BY ?recordLabel ?measurementLabel

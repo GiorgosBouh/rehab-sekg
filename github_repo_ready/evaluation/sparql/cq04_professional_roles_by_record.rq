@@ -1,0 +1,11 @@
+PREFIX sekg: <https://example.org/sekg/rehab#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+SELECT ?role ?roleLabel ?record ?recordLabel
+WHERE {
+  ?role a sekg:ProfessionalRole ;
+        rdfs:label ?roleLabel ;
+        sekg:interpretsRecord ?record .
+  ?record rdfs:label ?recordLabel .
+}
+ORDER BY ?roleLabel ?recordLabel
