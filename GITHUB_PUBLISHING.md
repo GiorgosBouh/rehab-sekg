@@ -10,6 +10,7 @@ GITHUB_PUBLISHING.md
 .gitignore
 .nojekyll
 requirements.txt
+index.html
 PoEM2026_Semantic_Enterprise_Knowledge_Graph_Idea.md
 demo/
 docs/

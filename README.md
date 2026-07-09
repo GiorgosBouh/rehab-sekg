@@ -18,6 +18,9 @@ Open the static demo:
 demo/index.html
 ```
 
+The repository root also contains `index.html`, which redirects to the
+demo folder.
+
 If the repository is published with GitHub Pages, the demo will be
 available at:
 
